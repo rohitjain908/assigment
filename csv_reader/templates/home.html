@@ -24,6 +24,7 @@
         var filename = fullpath.replace(/^.*[\\\/]/, '')
         filename = filename.slice(0,-4)
         var reader = new FileReader();
+        reader.readAsText(fileUpload.files[0]); 
         reader.onload = function (e) {
             
           var rows = e.target.result.split("\n");
@@ -40,15 +41,14 @@
           for (var i = 1; i < rows.length; i++) {
               var obj={};
               var cells = rows[i].split(",");
-              if (cells.length > 1) {
-                  
-                  for (var j = 0; j < cells.length - 1; j++) {
-                    obj[column_name[j]]=cells[j];
-                  }
-                  var last_value = cells[cells.length - 1];
-                  last_value = last_value.slice(0,-1)
-                  obj[last_column]=last_value
+                 
+              for (var j = 0; j < cells.length - 1; j++) {
+                obj[column_name[j]]=cells[j];
               }
+              var last_value = cells[cells.length - 1];
+              last_value = last_value.slice(0,-1)
+              obj[last_column]=last_value
+              
               file_data.push(obj)
           }
 
@@ -71,16 +71,16 @@
           }) 
           .catch(errors => console.log(errors)) 			
         }
-        reader.readAsText(fileUpload.files[0]); 
+        
     }
   </script>
   <div class="container" style="text-align: center;">
     <h1 >All Uploaded Files</h1>
    
       {% for l in file_list %}
-      <div style="font-size: large; margin-top:8px">
-        <a style="text-decoration: none;" href="{% url 'show' id=l.0 %}" target="_blank">{{l.1}}</a>
-      </div>
+        <div style="font-size: large; margin-top:8px">
+          <a style="text-decoration: none;" href="{% url 'show' id=l.0 %}" target="_blank">{{l.1}}</a>
+        </div>
       {% endfor %}
   </div>
 

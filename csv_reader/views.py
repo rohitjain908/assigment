@@ -15,7 +15,7 @@ def home(request):
     file_list.append(temp)
   return render(request,'home.html',{'file_list':file_list})
 
-def show(request,id):
+def show(request,id,key):
   table=Data.objects.get(id=id)
   table=table.json_data
   return render(request,'show.html',{
